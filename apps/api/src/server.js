@@ -1,11 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-import { evaluate, inspect, ValidationError } from './logic.js';
+import { evaluate, inspect, tupleOptions, ValidationError } from './logic.js';
 
 export const app = express();
 app.use(cors({ origin: process.env.WEB_ORIGIN ?? 'http://localhost:3000' }));
 app.use(express.json({ limit: '1mb' }));
 app.get('/api/health', (_request, response) => response.json({ status: 'ok' }));
+app.post('/api/tuples', (request, response, next) => {
+  try { response.json({ tuples: tupleOptions(request.body?.domain, request.body?.arities) }); }
+  catch (error) { next(error); }
+});
 app.post('/api/analyze', (request, response, next) => {
   try {
     const { freeVariables } = inspect(request.body);

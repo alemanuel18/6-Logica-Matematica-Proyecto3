@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluate, inspect, ValidationError } from './logic.js';
+import { evaluate, inspect, tupleOptions, ValidationError } from './logic.js';
 
 const model = {
   domain: ['a', 'b'],
@@ -54,4 +54,8 @@ test('rechaza dominios, tablas y relaciones inválidas', () => {
   assert.throws(() => run('P(c)', {}, { functions: [{ name: 'f', arity: 1, table: [{ args: ['a'], value: 'a' }] }] }), /requiere 2 asignaciones/);
   assert.throws(() => run('P(c)', {}, { predicates: [{ name: 'P', arity: 1, tuples: [] }] }), /relación no vacía/);
   assert.throws(() => run('P(c)', {}, { predicates: [{ name: 'P', arity: 1, tuples: [['z']] }] }), /Tupla inválida/);
+});
+
+test('genera tuplas para formularios desde el backend', () => {
+  assert.deepEqual(tupleOptions(['a', 'b'], [0, 2]), { 0: [[]], 2: [['a', 'a'], ['a', 'b'], ['b', 'a'], ['b', 'b']] });
 });
