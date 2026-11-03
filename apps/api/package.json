@@ -1,0 +1,11 @@
+{
+  "name": "@evaluador/api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": { "express": "^5.1.0", "cors": "^2.8.5" }
+}

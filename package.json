@@ -1,0 +1,12 @@
+{
+  "name": "evaluador-semantico",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev -w @evaluador/api\" \"npm run dev -w @evaluador/web\"",
+    "build": "npm run build -w @evaluador/web",
+    "test": "npm test -w @evaluador/api",
+    "start": "npm run start -w @evaluador/api"
+  },
+  "devDependencies": { "concurrently": "^9.2.1" }
+}
