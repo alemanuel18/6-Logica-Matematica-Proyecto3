@@ -1,12 +1,20 @@
 {
   "name": "evaluador-semantico",
   "private": true,
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "dev": "concurrently -k \"npm run dev -w @evaluador/api\" \"npm run dev -w @evaluador/web\"",
     "build": "npm run build -w @evaluador/web",
-    "test": "npm test -w @evaluador/api",
-    "start": "npm run start -w @evaluador/api"
+    "test": "npm test -w @evaluador/api && npm test -w @evaluador/web",
+    "start": "npm run start -w @evaluador/api",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
-  "devDependencies": { "concurrently": "^9.2.1" }
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prettier": "^3.9.10"
+  }
 }

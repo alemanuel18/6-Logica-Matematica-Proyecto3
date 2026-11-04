@@ -1,0 +1,311 @@
+openapi: 3.1.0
+info:
+  title: API del evaluador semántico
+  version: 1.0.0
+  description: Analiza y evalúa fórmulas de lógica de primer orden sobre dominios finitos.
+servers:
+  - url: http://localhost:4000
+tags:
+  - name: Sistema
+  - name: Interpretación
+  - name: Fórmulas
+paths:
+  /api/health:
+    get:
+      tags: [Sistema]
+      summary: Comprueba la disponibilidad de la API
+      responses:
+        '200':
+          description: API disponible
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    const: ok
+  /api/openapi.yaml:
+    get:
+      tags: [Sistema]
+      summary: Descarga esta especificación OpenAPI
+      responses:
+        '200':
+          description: Documento OpenAPI en YAML
+          content:
+            application/yaml:
+              schema:
+                type: string
+  /api/tuples:
+    post:
+      tags: [Interpretación]
+      summary: Genera todas las tuplas de D para cada aridad solicitada
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [domain, arities]
+              properties:
+                domain:
+                  $ref: '#/components/schemas/Domain'
+                arities:
+                  type: array
+                  items:
+                    type: integer
+                    minimum: 0
+            example:
+              domain: [a, b]
+              arities: [0, 1]
+      responses:
+        '200':
+          description: Tuplas agrupadas por aridad
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [tuples]
+                properties:
+                  tuples:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Tuple'
+              example:
+                tuples:
+                  '0': [[]]
+                  '1': [[a], [b]]
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/analyze:
+    post:
+      tags: [Fórmulas]
+      summary: Valida la interpretación y detecta variables libres
+      description: La interpretación debe estar completa y ser válida.
+      requestBody:
+        $ref: '#/components/requestBodies/EvaluationInput'
+      responses:
+        '200':
+          description: Variables libres ordenadas alfabéticamente
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [freeVariables]
+                properties:
+                  freeVariables:
+                    type: array
+                    items:
+                      type: string
+              example:
+                freeVariables: [x, y]
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/evaluate:
+    post:
+      tags: [Fórmulas]
+      summary: Evalúa la fórmula y devuelve una justificación
+      description: Cada variable libre debe tener un valor del dominio en environment.
+      requestBody:
+        $ref: '#/components/requestBodies/EvaluationInput'
+      responses:
+        '200':
+          description: Valor de verdad y explicación
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [truth, result, freeVariables, explanation]
+                properties:
+                  truth:
+                    type: boolean
+                  result:
+                    type: string
+                    enum: [Verdadero, Falso]
+                  freeVariables:
+                    type: array
+                    items:
+                      type: string
+                  explanation:
+                    $ref: '#/components/schemas/Explanation'
+              example:
+                truth: true
+                result: Verdadero
+                freeVariables: []
+                explanation:
+                  value: true
+                  reason: 'Testigo: x = a. La tupla (a) pertenece a Pᴵ.'
+                  evidence: decisive
+                  checks:
+                    - assignment: { x: a }
+                      value: true
+                      reason: La tupla (a) pertenece a Pᴵ.
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+components:
+  requestBodies:
+    EvaluationInput:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EvaluationInput'
+          example:
+            domain: [a, b]
+            functions:
+              - name: c
+                arity: 0
+                table:
+                  - args: []
+                    value: a
+            predicates:
+              - name: P
+                arity: 1
+                tuples: [[a]]
+            formula: ∃x.P(x)
+            environment: {}
+  responses:
+    BadRequest:
+      description: El cuerpo de la petición no es JSON válido.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [error]
+            properties:
+              error:
+                type: string
+          example:
+            error: JSON inválido.
+    ValidationError:
+      description: Entrada inválida. Esta respuesta no incluye valor de verdad.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Falta asignar la variable libre «x».
+            field: environment.x
+            position: null
+  schemas:
+    Domain:
+      type: array
+      minItems: 1
+      uniqueItems: true
+      items:
+        type: string
+        minLength: 1
+    Tuple:
+      type: array
+      items:
+        type: string
+    Function:
+      type: object
+      required: [name, arity, table]
+      properties:
+        name:
+          type: string
+          pattern: '^[A-Za-z_][A-Za-z_0-9]*$'
+        arity:
+          type: integer
+          minimum: 0
+        table:
+          type: array
+          minItems: 1
+          description: Tabla total de D^arity a D; cada tupla de argumentos aparece exactamente una vez.
+          items:
+            type: object
+            required: [args, value]
+            properties:
+              args:
+                $ref: '#/components/schemas/Tuple'
+              value:
+                type: string
+    Predicate:
+      type: object
+      required: [name, arity, tuples]
+      properties:
+        name:
+          type: string
+          pattern: '^[A-Za-z_][A-Za-z_0-9]*$'
+        arity:
+          type: integer
+          minimum: 0
+        tuples:
+          type: array
+          minItems: 1
+          description: Relación no vacía; cada tupla pertenece a D^arity y aparece una vez.
+          items:
+            $ref: '#/components/schemas/Tuple'
+    EvaluationInput:
+      type: object
+      required: [domain, formula]
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Function'
+          default: []
+        predicates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Predicate'
+          default: []
+        formula:
+          type: string
+          minLength: 1
+        environment:
+          type: object
+          additionalProperties:
+            type: string
+          default: {}
+    Explanation:
+      type: object
+      required: [value, reason]
+      properties:
+        value:
+          type: boolean
+        reason:
+          type: string
+        evidence:
+          type: string
+          enum: [decisive, complete]
+        checks:
+          type: array
+          items:
+            type: object
+            required: [assignment, value, reason]
+            properties:
+              assignment:
+                type: object
+                additionalProperties:
+                  type: string
+              value:
+                type: boolean
+              reason:
+                type: string
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Explanation'
+    Error:
+      type: object
+      required: [error, field, position]
+      properties:
+        error:
+          type: string
+        field:
+          type: string
+        position:
+          type: [integer, 'null']
