@@ -11,7 +11,41 @@ Aplicación web para evaluar fórmulas de lógica de primer orden en interpretac
 
 El frontend usa el **App Router de Next.js** para las rutas. Su código se organiza por sección en `src/features`, con componentes, controladores y servicios o repositorios donde la sección tiene lógica o llamadas HTTP. `src/repositories/httpClient.js` concentra el transporte común. En el backend, `src/routes` conecta controladores, los servicios coordinan el análisis y la evaluación, `src/repositories` consulta la interpretación validada y `src/middleware` concentra el manejo de errores. Las reglas lógicas están en `src/domain`.
 
-## Inicio local
+## Iniciar con Docker Compose
+
+Requiere Docker Engine y Docker Compose v2. Desde la raíz del repositorio:
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+docker compose ps
+```
+
+Abre `http://localhost:3000`. La API queda en `http://localhost:4000`; comprueba su estado en `http://localhost:4000/api/health`. Compose espera a que la API esté saludable antes de iniciar la web.
+
+El archivo `.env` se crea con valores listos para uso local y está ignorado por Git. Edita sus valores antes de levantar los contenedores:
+
+| Variable              | Valor inicial           | Uso                                                             |
+| --------------------- | ----------------------- | --------------------------------------------------------------- |
+| `WEB_PORT`            | `3000`                  | Puerto de la web en tu máquina.                                 |
+| `API_PORT`            | `4000`                  | Puerto de la API en tu máquina.                                 |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | Dirección pública de la API que usa el navegador.               |
+| `WEB_ORIGIN`          | `http://localhost:3000` | Origen permitido por CORS; debe coincidir con la URL de la web. |
+
+Si cambias `API_PORT`, actualiza también `NEXT_PUBLIC_API_URL`. Si cambias `WEB_PORT`, actualiza `WEB_ORIGIN`. Para acceder desde otra máquina, usa en ambas URL un nombre o IP accesible desde el navegador. `NEXT_PUBLIC_API_URL` se incorpora durante la construcción de Next.js; después de cambiarla, reconstruye la imagen:
+
+```bash
+docker compose up --build -d
+```
+
+Comandos útiles:
+
+```bash
+docker compose logs -f api web
+docker compose down
+```
+
+## Inicio local sin Docker
 
 Requiere Node.js 22 o superior. Desde la raíz:
 
@@ -28,13 +62,7 @@ npm run start -w @evaluador/api
 npm run start -w @evaluador/web
 ```
 
-O con Docker:
-
-```bash
-docker compose up --build
-```
-
-El navegador llama a la API mediante `NEXT_PUBLIC_API_URL` (por defecto `http://localhost:4000`). En Docker se configura durante la construcción del frontend. `WEB_ORIGIN` controla el origen CORS del backend.
+El archivo `.env` de la raíz configura Docker Compose. Los comandos `npm` usan los valores por defecto del código, salvo que definas las variables en el entorno de cada proceso.
 
 ## Uso
 
