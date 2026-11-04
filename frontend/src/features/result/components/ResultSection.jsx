@@ -1,6 +1,7 @@
 import { Explanation } from './Explanation.jsx';
+import { VoiceGuide } from './VoiceGuide.jsx';
 
-export function ResultSection({ result, error, environment }) {
+export function ResultSection({ result, error, environment, formula }) {
   return (
     <>
       {error && (
@@ -35,6 +36,7 @@ export function ResultSection({ result, error, environment }) {
           <Explanation node={result.explanation} />
         </section>
       )}
+      <VoiceGuide result={result} formula={formula} environment={environment} />
     </>
   );
 }

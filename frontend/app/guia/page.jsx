@@ -60,6 +60,16 @@ export default function GuidePage() {
             contraejemplos o una comprobación completa según el cuantificador.
           </p>
         </section>
+        <section className="card">
+          <span className="eyebrow">05</span>
+          <h2>Guía de voz</h2>
+          <p>
+            Pulsa «Escuchar introducción» para oír una explicación breve del evaluador. Después de
+            evaluar una fórmula, puedes pedirle que lea el resultado y su explicación. Elige una voz
+            en español instalada en tu navegador o sistema y pulsa «Detener voz» cuando quieras
+            interrumpirla. La voz disponible depende del dispositivo.
+          </p>
+        </section>
       </div>
     </main>
   );

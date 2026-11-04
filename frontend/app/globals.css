@@ -121,6 +121,58 @@ button:disabled {
   border-radius: 16px;
   padding: 25px;
 }
+.voice-guide {
+  background: #ffffff;
+  border: 1px solid #e0e9e6;
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: 0 9px 35px #143f3510;
+}
+.voice-guide-copy p {
+  margin: 7px 0 14px;
+  color: #687a78;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.voice-guide-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+.voice-select-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 210px;
+  color: #526b63;
+  font-size: 12px;
+  font-weight: 700;
+}
+.voice-select-label select {
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 9px;
+}
+.voice-guide-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.voice-stop {
+  border: 1px solid #e0c9bf;
+  border-radius: 8px;
+  background: #fff8f5;
+  color: #94553d;
+  font-weight: 700;
+}
+.voice-stop:hover:not(:disabled) {
+  background: #f9ebe5;
+}
+.voice-guide button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
 .card h2,
 .result-card h2 {
   font-family: Georgia, serif;

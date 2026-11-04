@@ -76,6 +76,7 @@ export function EvaluatorPage() {
             result={state.result}
             error={state.error}
             environment={state.environment}
+            formula={state.formula}
           />
         </div>
       </form>
