@@ -13,24 +13,24 @@ El frontend usa el **App Router de Next.js** para las rutas. Su código se organ
 
 ## Iniciar con Docker Compose
 
-Requiere Docker Engine y Docker Compose v2. Desde la raíz del repositorio:
+Requiere Docker Engine y Docker Compose v2. El archivo de configuración es `docker-compose.yml`. Desde la raíz del repositorio:
 
 ```bash
-cp .env.example .env
+test -f .env || cp .env.example .env
 docker compose up --build -d
 docker compose ps
 ```
 
-Abre `http://localhost:3000`. La API queda en `http://localhost:4000`; comprueba su estado en `http://localhost:4000/api/health`. Compose espera a que la API esté saludable antes de iniciar la web.
+Abre **`http://localhost:3100`**. La API queda en `http://localhost:4100`; comprueba su estado en `http://localhost:4100/api/health`. Los puertos 3000 y 4000 son internos a los contenedores. Compose espera a que la API esté saludable antes de iniciar la web.
 
-El archivo `.env` se crea con valores listos para uso local y está ignorado por Git. Edita sus valores antes de levantar los contenedores:
+El archivo `.env` se crea con valores listos para uso local y está ignorado por Git. Si ya tenías un `.env` anterior, actualiza sus cuatro valores; Compose no reemplaza ese archivo. Edita sus valores antes de levantar los contenedores:
 
 | Variable              | Valor inicial           | Uso                                                             |
 | --------------------- | ----------------------- | --------------------------------------------------------------- |
-| `WEB_PORT`            | `3000`                  | Puerto de la web en tu máquina.                                 |
-| `API_PORT`            | `4000`                  | Puerto de la API en tu máquina.                                 |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | Dirección pública de la API que usa el navegador.               |
-| `WEB_ORIGIN`          | `http://localhost:3000` | Origen permitido por CORS; debe coincidir con la URL de la web. |
+| `WEB_PORT`            | `3100`                  | Puerto de la web en tu máquina.                                 |
+| `API_PORT`            | `4100`                  | Puerto de la API en tu máquina.                                 |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:4100` | Dirección pública de la API que usa el navegador.               |
+| `WEB_ORIGIN`          | `http://localhost:3100` | Origen permitido por CORS; debe coincidir con la URL de la web. |
 
 Si cambias `API_PORT`, actualiza también `NEXT_PUBLIC_API_URL`. Si cambias `WEB_PORT`, actualiza `WEB_ORIGIN`. Para acceder desde otra máquina, usa en ambas URL un nombre o IP accesible desde el navegador. `NEXT_PUBLIC_API_URL` se incorpora durante la construcción de Next.js; después de cambiarla, reconstruye la imagen:
 
