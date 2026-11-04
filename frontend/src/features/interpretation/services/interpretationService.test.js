@@ -22,3 +22,21 @@ test('construye el contrato de la API con tuplas generadas por el backend', () =
   ]);
   assert.deepEqual(interpretation.predicates[0].tuples, [['a']]);
 });
+
+test('envía relaciones vacías y solo las tuplas verdaderas del dominio actual', () => {
+  const interpretation = buildInterpretation(
+    ['a', 'b'],
+    [],
+    [
+      { name: 'P', arity: 1, tuples: { '["a"]': false, '["b"]': false } },
+      { name: 'Q', arity: 1, tuples: { '["a"]': true, '["z"]': true } },
+      { name: 'R', arity: 0, tuples: {} },
+    ],
+    { 0: [[]], 1: [['a'], ['b']] },
+  );
+  assert.deepEqual(interpretation.predicates, [
+    { name: 'P', arity: 1, tuples: [] },
+    { name: 'Q', arity: 1, tuples: [['a']] },
+    { name: 'R', arity: 0, tuples: [] },
+  ]);
+});

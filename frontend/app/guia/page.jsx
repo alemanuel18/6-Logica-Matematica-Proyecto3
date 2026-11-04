@@ -34,7 +34,14 @@ export default function GuidePage() {
           <h2>Interpretación</h2>
           <p>
             Declara funciones y predicados con nombre y aridad. Completa todas las salidas de cada
-            función y marca al menos una tupla para cada predicado.
+            función. En los predicados, marca las combinaciones verdaderas; si no marcas ninguna,
+            todas son falsas.
+          </p>
+          <p>
+            Las tablas muestran hasta 20 combinaciones por página. Filtra por argumento o por estado
+            para revisar las verdaderas, las falsas o las salidas pendientes. Los botones «Todas
+            verdaderas» y «Todas falsas» afectan todas las combinaciones del predicado, incluso las
+            que no aparecen por los filtros o la paginación.
           </p>
         </section>
         <section className="card">

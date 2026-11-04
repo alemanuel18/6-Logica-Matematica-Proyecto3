@@ -242,8 +242,7 @@ components:
           minimum: 0
         tuples:
           type: array
-          minItems: 1
-          description: Relación no vacía; cada tupla pertenece a D^arity y aparece una vez.
+          description: Cada tupla pertenece a D^arity y aparece una vez. Una lista vacía representa un predicado siempre falso.
           items:
             $ref: '#/components/schemas/Tuple'
     EvaluationInput:

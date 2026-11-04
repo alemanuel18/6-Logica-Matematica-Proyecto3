@@ -1,6 +1,6 @@
 # Semántica y sintaxis
 
-El dominio es una lista no vacía de cadenas distintas. Cada símbolo funcional declara nombre, aridad y una tabla total: exactamente una salida del dominio para cada tupla de `Dⁿ`. Cada predicado declara nombre, aridad y una relación no vacía de tuplas distintas de `Dⁿ`. La igualdad es la igualdad de elementos del dominio.
+El dominio es una lista no vacía de cadenas distintas. Cada símbolo funcional declara nombre, aridad y una tabla total: exactamente una salida del dominio para cada tupla de `Dⁿ`. Cada predicado declara nombre, aridad y una relación de tuplas distintas (posiblemente vacía) de `Dⁿ`. La igualdad es la igualdad de elementos del dominio.
 
 ## Gramática
 

@@ -1,4 +1,5 @@
 import { createId } from '../services/interpretationService.js';
+import { TupleTable } from './TupleTable.jsx';
 
 export function SymbolEditor({ title, kind, items, setItems, domain, tupleOptions }) {
   const update = (id, changes) =>
@@ -73,49 +74,14 @@ export function SymbolEditor({ title, kind, items, setItems, domain, tupleOption
               item.arity !== '' &&
               Number.isInteger(Number(item.arity)) &&
               Number(item.arity) >= 0 && (
-                <div className="tuple-grid">
-                  {tuples.map((tuple) => {
-                    const tupleKey = JSON.stringify(tuple);
-                    return (
-                      <div className="tuple-row" key={tupleKey}>
-                        <span className="tuple-name">
-                          {item.name}({tuple.join(', ')})
-                        </span>
-                        {kind === 'function' ? (
-                          <select
-                            aria-label={`Valor de ${item.name}(${tuple.join(', ')})`}
-                            value={item.table?.[tupleKey] ?? ''}
-                            onChange={(event) =>
-                              update(item.id, {
-                                table: { ...item.table, [tupleKey]: event.target.value },
-                              })
-                            }
-                          >
-                            <option value="">Seleccionar…</option>
-                            {domain.map((value) => (
-                              <option key={value} value={value}>
-                                {value}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <label className="check-label">
-                            <input
-                              type="checkbox"
-                              checked={Boolean(item.tuples?.[tupleKey])}
-                              onChange={(event) =>
-                                update(item.id, {
-                                  tuples: { ...item.tuples, [tupleKey]: event.target.checked },
-                                })
-                              }
-                            />{' '}
-                            Pertenece
-                          </label>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+                <TupleTable
+                  key={JSON.stringify([item.arity, domain])}
+                  item={item}
+                  kind={kind}
+                  domain={domain}
+                  tuples={tuples}
+                  update={update}
+                />
               )}
           </div>
         );

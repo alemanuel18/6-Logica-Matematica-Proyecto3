@@ -317,12 +317,12 @@ const invalidCases = [
     change: (input) => ({ ...input, domain: [...input.domain, input.domain[0]] }),
   },
   {
-    name: 'relación vacía',
+    name: 'relación que no es una lista',
     field: 'predicates.P',
     change: (input) => ({
       ...input,
       predicates: input.predicates.map((symbol) =>
-        symbol.name === 'P' ? { ...symbol, tuples: [] } : symbol,
+        symbol.name === 'P' ? { ...symbol, tuples: null } : symbol,
       ),
     }),
   },

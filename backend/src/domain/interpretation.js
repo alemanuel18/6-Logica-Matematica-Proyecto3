@@ -82,9 +82,9 @@ export function validateModel(input) {
     symbols.get(fn.name).entries = entries;
   }
   for (const predicate of predicates) {
-    if (!Array.isArray(predicate.tuples) || !predicate.tuples.length)
+    if (!Array.isArray(predicate.tuples))
       throw new ValidationError(
-        `El predicado «${predicate.name}» requiere una relación no vacía.`,
+        `El predicado «${predicate.name}» requiere una lista de tuplas.`,
         `predicates.${predicate.name}`,
       );
     const tuples = new Set();

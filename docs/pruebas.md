@@ -8,7 +8,7 @@ Un oráculo independiente calcula el valor directamente desde el árbol generado
 
 Una prueba de cobertura comprueba que la batería incluya los cuatro tamaños de dominio, fórmulas abiertas y cerradas, todos los conectivos y ambos resultados para `∀` y `∃`.
 
-Las 100 entradas inválidas alteran interpretaciones y fórmulas para cubrir sintaxis incompleta, símbolos desconocidos, aridades, dominio duplicado, relaciones vacías, funciones incompletas, salidas y tuplas fuera del dominio y entornos faltantes o inválidos. Se comprueba que cada una produzca un error de validación en la sección esperada.
+Las 100 entradas inválidas alteran interpretaciones y fórmulas para cubrir sintaxis incompleta, símbolos desconocidos, aridades, dominio duplicado, relaciones que no son listas, funciones incompletas, salidas y tuplas fuera del dominio y entornos faltantes o inválidos. Se comprueba que cada una produzca un error de validación en la sección esperada.
 
 Para ejecutar toda la suite, incluyendo pruebas unitarias y de la API:
 

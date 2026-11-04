@@ -68,7 +68,7 @@ El archivo `.env` de la raíz configura Docker Compose. Los comandos `npm` usan 
 ## Uso
 
 1. Ingresa un dominio finito no vacío. Los elementos se separan con coma o salto de línea.
-2. Declara funciones y predicados con nombre y aridad. Una función necesita una salida para cada tupla; un predicado necesita al menos una tupla marcada.
+2. Declara funciones y predicados con nombre y aridad. Una función necesita una salida para cada tupla; en un predicado, las tuplas sin marcar son falsas (pueden ser todas). Las tablas permiten filtrar por argumento y estado y muestran 20 combinaciones por página. Las acciones «Todas verdaderas» y «Todas falsas» afectan todas las combinaciones del predicado.
 3. Escribe una fórmula. Ejemplo con la configuración inicial: `∃x.P(x)`.
 4. Si hay variables libres, selecciona un valor del dominio para cada una.
 5. Pulsa **Evaluar fórmula**. Los errores aparecen sin valor de verdad; el resultado válido incluye una razón decisiva o una comprobación completa.

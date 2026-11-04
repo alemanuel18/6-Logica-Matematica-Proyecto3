@@ -33,6 +33,11 @@ test('API: salud, análisis, evaluación y errores sin valor de verdad', async (
     const valid = await post('/api/evaluate', input);
     assert.equal(valid.status, 200);
     assert.equal(valid.body.truth, true);
+    const emptyRelation = { ...input, predicates: [{ name: 'P', arity: 1, tuples: [] }] };
+    assert.equal((await post('/api/analyze', emptyRelation)).status, 200);
+    const allFalse = await post('/api/evaluate', emptyRelation);
+    assert.equal(allFalse.status, 200);
+    assert.equal(allFalse.body.truth, false);
     const invalid = await post('/api/evaluate', { ...input, environment: {} });
     assert.equal(invalid.status, 422);
     assert.equal(Object.hasOwn(invalid.body, 'truth'), false);

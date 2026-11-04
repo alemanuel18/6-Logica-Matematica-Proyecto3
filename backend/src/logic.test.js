@@ -72,13 +72,25 @@ test('rechaza dominios, tablas y relaciones inválidas', () => {
     /requiere 2 asignaciones/,
   );
   assert.throws(
-    () => run('P(c)', {}, { predicates: [{ name: 'P', arity: 1, tuples: [] }] }),
-    /relación no vacía/,
+    () => run('P(c)', {}, { predicates: [{ name: 'P', arity: 1, tuples: null }] }),
+    /lista de tuplas/,
   );
   assert.throws(
     () => run('P(c)', {}, { predicates: [{ name: 'P', arity: 1, tuples: [['z']] }] }),
     /Tupla inválida/,
   );
+});
+
+test('una relación vacía hace falsas todas las instancias del predicado', () => {
+  const predicates = [{ name: 'P', arity: 1, tuples: [] }];
+  assert.equal(run('P(c)', {}, { predicates }).truth, false);
+  assert.equal(run('∃x.P(x)', {}, { predicates }).truth, false);
+  assert.equal(run('∀x.¬P(x)', {}, { predicates }).truth, true);
+});
+
+test('predicados de aridad cero admiten ambos valores de verdad', () => {
+  assert.equal(run('P()', {}, { predicates: [{ name: 'P', arity: 0, tuples: [] }] }).truth, false);
+  assert.equal(run('P()', {}, { predicates: [{ name: 'P', arity: 0, tuples: [[]] }] }).truth, true);
 });
 
 test('genera tuplas para formularios desde el backend', () => {
