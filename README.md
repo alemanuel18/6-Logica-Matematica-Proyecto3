@@ -8,6 +8,7 @@ Aplicación web para evaluar fórmulas de lógica de primer orden en interpretac
 - `frontend`: React y Next.js. Presenta formularios y resultados; no evalúa fórmulas.
 - `docs/semantica.md`: gramática, precedencia y reglas de evaluación.
 - `docs/openapi.yaml`: contrato OpenAPI 3.1 de todas las rutas.
+- `docs/pruebas.md`: alcance y reproducción de la batería de estrés.
 
 El frontend usa el **App Router de Next.js** para las rutas. Su código se organiza por sección en `src/features`, con componentes, controladores y servicios o repositorios donde la sección tiene lógica o llamadas HTTP. `src/repositories/httpClient.js` concentra el transporte común. En el backend, `src/routes` conecta controladores, los servicios coordinan el análisis y la evaluación, `src/repositories` consulta la interpretación validada y `src/middleware` concentra el manejo de errores. Las reglas lógicas están en `src/domain`.
 
@@ -100,3 +101,5 @@ npm run build
 ```
 
 Las pruebas del backend cubren términos, conectivos, variables libres, cuantificadores, evidencia y entradas inválidas. Las pruebas del frontend comprueban la conversión del dominio y la construcción del contrato HTTP. La compilación de Next.js verifica la integración estática de las páginas.
+
+La [batería de estrés](docs/pruebas.md) añade 1,000 interpretaciones y fórmulas válidas, más 100 entradas inválidas, con semilla fija y un oráculo independiente.
