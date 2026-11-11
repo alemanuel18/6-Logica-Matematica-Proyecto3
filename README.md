@@ -63,7 +63,7 @@ npm run start -w @evaluador/api
 npm run start -w @evaluador/web
 ```
 
-El archivo `.env` de la raíz configura Docker Compose. Los comandos `npm` usan los valores por defecto del código, salvo que definas las variables en el entorno de cada proceso.
+El archivo `.env` de la raíz configura Docker Compose. El backend local también carga las variables `ELEVENLABS_*` de ese archivo; las variables del proceso tienen prioridad. Las demás opciones locales usan los valores por defecto del código, salvo que las definas en el entorno de cada proceso.
 
 ## Uso
 
@@ -103,3 +103,19 @@ npm run build
 Las pruebas del backend cubren términos, conectivos, variables libres, cuantificadores, evidencia y entradas inválidas. Las pruebas del frontend comprueban la conversión del dominio y la construcción del contrato HTTP. La compilación de Next.js verifica la integración estática de las páginas.
 
 La [batería de estrés](docs/pruebas.md) añade 1,000 interpretaciones y fórmulas válidas, más 100 entradas inválidas, con semilla fija y un oráculo independiente.
+
+## Guía de voz con ElevenLabs
+
+Completa el `.env` local (ignorado por Git):
+
+```dotenv
+ELEVENLABS_API_KEY=tu_clave_privada
+ELEVENLABS_VOICE_ID=id_de_tu_voz
+ELEVENLABS_MODEL_ID=eleven_multilingual_v2
+```
+
+Para usar una voz clonada, créala primero en tu cuenta de ElevenLabs y copia su **Voice ID** en `ELEVENLABS_VOICE_ID`. También admite voces normales de esa cuenta. La aplicación usa esa voz para narrar; no crea clones ni recibe grabaciones. Consulta la [API oficial de texto a voz](https://elevenlabs.io/docs/api-reference/text-to-speech/convert).
+
+Reinicia el backend local o ejecuta `docker compose up --build -d`. En **Guía de voz → Servicio de voz**, selecciona **ElevenLabs · voz personalizada / clonada**. La opción se habilita y se selecciona automáticamente cuando hay clave e ID configurados; puedes cambiar a las voces del dispositivo. La clave permanece en el servidor y no se incorpora a Next.js. El texto se envía a ElevenLabs al pulsar escuchar y consume los créditos de tu cuenta; si hay un error se muestra en pantalla y puedes elegir las voces del dispositivo.
+
+`GET /api/voice/config` devuelve `{ "available": true/false }` sin secretos. `POST /api/voice/speech` recibe `{ "text": "..." }` (1–5000 caracteres) y devuelve audio MP3; responde 422 para texto inválido, 503 sin configuración y 502 si falla el proveedor.

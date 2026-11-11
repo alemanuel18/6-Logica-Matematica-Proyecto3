@@ -1,3 +1,4 @@
+import { getVoiceConfig, synthesizeVoice } from '../controllers/voiceController.js';
 import { Router } from 'express';
 import { analyzeFormula } from '../controllers/analysisController.js';
 import { evaluateFormula } from '../controllers/evaluationController.js';
@@ -13,3 +14,6 @@ apiRouter.get('/openapi.yaml', (_request, response) => response.type('yaml').sen
 apiRouter.post('/tuples', asyncHandler(listTuples));
 apiRouter.post('/analyze', asyncHandler(analyzeFormula));
 apiRouter.post('/evaluate', asyncHandler(evaluateFormula));
+
+apiRouter.get('/voice/config', getVoiceConfig);
+apiRouter.post('/voice/speech', asyncHandler(synthesizeVoice));

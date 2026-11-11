@@ -4,6 +4,9 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     environment:
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
+      ELEVENLABS_MODEL_ID: ${ELEVENLABS_MODEL_ID:-eleven_multilingual_v2}
       PORT: 4000
       WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3100}
     ports:

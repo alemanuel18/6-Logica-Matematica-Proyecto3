@@ -10,6 +10,51 @@ tags:
   - name: Interpretación
   - name: Fórmulas
 paths:
+  /api/voice/config:
+    get:
+      tags: [Sistema]
+      summary: Indica si la voz de ElevenLabs está configurada sin exponer secretos
+      responses:
+        '200':
+          description: Disponibilidad de la voz configurada
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [available]
+                properties:
+                  available:
+                    type: boolean
+  /api/voice/speech:
+    post:
+      tags: [Sistema]
+      summary: Genera narración con la voz normal o clonada configurada en el servidor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+                  minLength: 1
+                  maxLength: 5000
+      responses:
+        '200':
+          description: Narración generada
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        '422':
+          description: Texto vacío o inválido
+        '503':
+          description: Falta clave o ID de voz
+        '502':
+          description: Error de conexión o respuesta fallida de ElevenLabs
   /api/health:
     get:
       tags: [Sistema]
