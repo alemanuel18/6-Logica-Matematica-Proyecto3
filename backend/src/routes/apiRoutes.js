@@ -5,6 +5,7 @@ import { evaluateFormula } from '../controllers/evaluationController.js';
 import { listTuples } from '../controllers/tupleController.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { fileURLToPath } from 'node:url';
+import { peanoAction } from '../domain/peano.js';
 
 const openApiPath = fileURLToPath(new URL('../../../docs/openapi.yaml', import.meta.url));
 
@@ -14,6 +15,7 @@ apiRouter.get('/openapi.yaml', (_request, response) => response.type('yaml').sen
 apiRouter.post('/tuples', asyncHandler(listTuples));
 apiRouter.post('/analyze', asyncHandler(analyzeFormula));
 apiRouter.post('/evaluate', asyncHandler(evaluateFormula));
+apiRouter.post('/peano', (request, response) => response.json(peanoAction(request.body)));
 
 apiRouter.get('/voice/config', getVoiceConfig);
 apiRouter.post('/voice/speech', asyncHandler(synthesizeVoice));

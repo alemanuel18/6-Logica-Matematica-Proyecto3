@@ -1,6 +1,6 @@
 # Evaluador semántico · MM3032
 
-Aplicación web para evaluar fórmulas de lógica de primer orden en interpretaciones finitas. Este repositorio implementa los requisitos obligatorios del [enunciado](./MM3032%20-%20Proyecto.pdf); los aportes creativos quedan fuera del alcance.
+Aplicación web para evaluar fórmulas de lógica de primer orden en interpretaciones finitas y trabajar con aritmética de Peano en una pestaña independiente. Implementa los requisitos del [enunciado](./MM3032%20-%20Proyecto.pdf) y añade un laboratorio de deducción y numeración de Gödel.
 
 ## Estructura
 
@@ -74,6 +74,18 @@ El archivo `.env` de la raíz configura Docker Compose. El backend local tambié
 5. Pulsa **Evaluar fórmula**. Los errores aparecen sin valor de verdad; el resultado válido incluye una razón decisiva o una comprobación completa.
 
 ## API
+
+### Aritmética de Peano y Gödel
+
+Abre la pestaña **Aritmética de Peano y Gödel** (`/peano`). Incluye un editor de fórmulas, seis axiomas aritméticos, un generador del esquema de inducción y un comprobador de demostraciones con un ejemplo de `0+1=1`. El análisis y la comprobación se ejecutan en el backend, separados del evaluador semántico finito.
+
+El modo **automático** intenta demostrar la fórmula ingresada y muestra un certificado con axiomas, reglas y referencias. Resuelve ejemplos como `2+2=4`, `2*3=6` o `∀x.(x+1=S(x))`. Tiene límites explícitos: si no encuentra prueba, lo indica sin afirmar que la fórmula sea falsa. La prueba encontrada puede abrirse en el modo **manual** para editarla y volver a comprobarla.
+
+El modo manual ofrece un conjunto inicial de reglas sin hipótesis abiertas: axiomas, inducción, introducción y eliminación universal, introducción existencial, modus ponens, reflexividad, simetría, transitividad, congruencia del sucesor, suma y producto e introducción y eliminación de conjunción. No implementa todavía un cálculo completo de primer orden. Una validación de sintaxis no demuestra la fórmula. La explicación de la incompletitud queda para una ampliación futura.
+
+La sección de Gödel codifica fórmulas canónicas por potencias de primos con un convenio didáctico explícito. Muestra los símbolos, exponentes, factorización exacta y, cuando su tamaño lo permite, el entero decimal; también recupera fórmulas a partir de enteros de ese convenio. Consulta [docs/peano.md](docs/peano.md) para las reglas, límites y contrato.
+
+### Evaluador semántico
 
 `POST /api/tuples` recibe `{ "domain": ["a", "b"], "arities": [0, 1] }` y devuelve las combinaciones por aridad. `POST /api/analyze` recibe la interpretación y fórmula, y devuelve `freeVariables`. `POST /api/evaluate` recibe además `environment` y devuelve `truth`, `result`, `freeVariables` y `explanation`. `GET /api/health` indica disponibilidad.
 

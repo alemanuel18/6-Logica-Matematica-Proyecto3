@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { WorkspaceNav } from './WorkspaceNav.jsx';
 import { useEvaluatorController } from '../controllers/useEvaluatorController.js';
 import { DomainSection } from '../features/domain/components/DomainSection.jsx';
 import { SymbolEditor } from '../features/interpretation/components/SymbolEditor.jsx';
@@ -22,6 +23,7 @@ export function EvaluatorPage() {
             Guía de uso
           </Link>
         </div>
+        <WorkspaceNav active="semantic" />
         <div className="hero-content">
           <span className="eyebrow">EVALUADOR SEMÁNTICO</span>
           <h1>Explora el valor de una fórmula.</h1>

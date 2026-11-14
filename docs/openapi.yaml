@@ -10,6 +10,99 @@ tags:
   - name: Interpretación
   - name: Fórmulas
 paths:
+  /api/peano:
+    post:
+      tags: [Fórmulas]
+      summary: Analiza PA, busca demostraciones, comprueba pasos o codifica y decodifica Gödel
+      description: |
+        Laboratorio independiente de las interpretaciones finitas. Consulte docs/peano.md
+        para los campos de cada regla y los límites del convenio de codificación.
+        Una prueba inválida responde 200 con valid=false y errores por paso.
+        La acción prove devuelve status=proved con un certificado steps reutilizable
+        o status=notFound sin afirmar falsedad ni indemostrabilidad.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action:
+                  type: string
+                  enum: [analyze, induction, proof, prove, encode, decode]
+                maxSteps:
+                  type: integer
+                  minimum: 10
+                  maximum: 100
+                  default: 100
+                formula:
+                  type: string
+                  maxLength: 2000
+                body:
+                  type: string
+                  maxLength: 2000
+                variable:
+                  type: string
+                  pattern: '^[a-z][a-z0-9_]*$'
+                number:
+                  type: string
+                  pattern: '^[1-9][0-9]{0,3999}$'
+                steps:
+                  type: array
+                  minItems: 1
+                  maxItems: 100
+                  items:
+                    type: object
+                    required: [formula, rule]
+                    properties:
+                      formula:
+                        type: string
+                      rule:
+                        type: string
+                        enum:
+                          [
+                            axiom,
+                            induction,
+                            forallElim,
+                            forallIntro,
+                            mp,
+                            refl,
+                            sym,
+                            trans,
+                            successor,
+                            congruence,
+                            existsIntro,
+                            andIntro,
+                            andLeft,
+                            andRight,
+                          ]
+                      axiom:
+                        type: string
+                        enum: [P1, P2, P3, P4, P5, P6]
+                      refs:
+                        type: array
+                        items:
+                          type: integer
+                          minimum: 1
+                      term:
+                        type: string
+                      operator:
+                        type: string
+                        enum: ['+', '*']
+                      body:
+                        type: string
+                      variable:
+                        type: string
+      responses:
+        '200':
+          description: Resultado de la acción solicitada; enteros de Gödel como cadenas decimales
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: Sintaxis, codificación o solicitud inválida
   /api/voice/config:
     get:
       tags: [Sistema]
