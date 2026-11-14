@@ -67,6 +67,8 @@ El archivo `.env` de la raíz configura Docker Compose. El backend local tambié
 
 ## Uso
 
+La navegación principal separa **Evaluador semántico** (`/`), **Peano** (`/peano`), **Números de Gödel** (`/godel`) y **Aprender paso a paso** (`/godel/aprender`). Dentro de Peano, **Axiomas e inducción** (`/peano/axiomas`) abre la referencia sin perder la demostración en curso al alternar entre ambas páginas. La explicación formal está en **Teoremas de incompletitud** (`/godel/teoremas`).
+
 1. Ingresa un dominio finito no vacío. Los elementos se separan con coma o salto de línea.
 2. Declara funciones y predicados con nombre y aridad. Una función necesita una salida para cada tupla; en un predicado, las tuplas sin marcar son falsas (pueden ser todas). Las tablas permiten filtrar por argumento y estado y muestran 20 combinaciones por página. Las acciones «Todas verdaderas» y «Todas falsas» afectan todas las combinaciones del predicado.
 3. Escribe una fórmula. Ejemplo con la configuración inicial: `∃x.P(x)`.
@@ -81,7 +83,9 @@ Abre la pestaña **Aritmética de Peano y Gödel** (`/peano`). Incluye un editor
 
 El modo **automático** intenta demostrar la fórmula ingresada y muestra un certificado con axiomas, reglas y referencias. Resuelve ejemplos como `2+2=4`, `2*3=6` o `∀x.(x+1=S(x))`. Tiene límites explícitos: si no encuentra prueba, lo indica sin afirmar que la fórmula sea falsa. La prueba encontrada puede abrirse en el modo **manual** para editarla y volver a comprobarla.
 
-El modo manual ofrece un conjunto inicial de reglas sin hipótesis abiertas: axiomas, inducción, introducción y eliminación universal, introducción existencial, modus ponens, reflexividad, simetría, transitividad, congruencia del sucesor, suma y producto e introducción y eliminación de conjunción. No implementa todavía un cálculo completo de primer orden. Una validación de sintaxis no demuestra la fórmula. La explicación de la incompletitud queda para una ampliación futura.
+La lección de Gödel propone nueve retos sin fórmulas obligatorias, con pistas, respuestas explicadas y avance guardado en el navegador. Lleva desde las reglas de una máquina hasta una explicación intuitiva de incompletitud, y termina invitando al alumno a contar la conclusión con sus palabras. La notación y las hipótesis formales quedan como consulta opcional.
+
+El modo manual ofrece un conjunto inicial de reglas sin hipótesis abiertas: axiomas, inducción, introducción y eliminación universal, introducción existencial, modus ponens, reflexividad, simetría, transitividad, congruencia del sucesor, suma y producto e introducción y eliminación de conjunción. No implementa todavía un cálculo completo de primer orden. Una validación de sintaxis no demuestra la fórmula. La sección de incompletitud incluye un recorrido guiado de Gödel y Rosser, un selector de hipótesis y un editor de esquemas en metanotación. Distingue la explicación matemática de las pruebas verificadas por el motor educativo.
 
 La sección de Gödel codifica fórmulas canónicas por potencias de primos con un convenio didáctico explícito. Muestra los símbolos, exponentes, factorización exacta y, cuando su tamaño lo permite, el entero decimal; también recupera fórmulas a partir de enteros de ese convenio. Consulta [docs/peano.md](docs/peano.md) para las reglas, límites y contrato.
 

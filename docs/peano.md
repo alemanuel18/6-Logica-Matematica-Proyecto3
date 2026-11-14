@@ -1,5 +1,18 @@
 # Aritmética de Peano y numeración de Gödel
 
+## Páginas y navegación
+
+El contenido se distribuye por tarea para evitar una sola página extensa:
+
+- `/`: evaluador semántico finito.
+- `/peano`: demostraciones automáticas y manuales; los pasos manuales se pueden desplegar individualmente y los errores se abren al comprobar.
+- `/peano/axiomas`: axiomas y generador de inducción. El estado de Peano se comparte mediante un layout persistente: cambiar entre estas dos páginas no borra la fórmula ni los pasos. «Usar» y «Añadir a la demostración» regresan al espacio de demostraciones con el contenido elegido.
+- `/godel`: codificación y decodificación de fórmulas.
+- `/godel/aprender`: lección interactiva, con su avance guardado en el navegador.
+- `/godel/teoremas`: referencia formal y editor de esquemas.
+
+El menú principal enlaza las áreas y cada sección tiene navegación local cuando corresponde. La referencia formal se enlaza desde la lección en lugar de incrustarse al final de esta.
+
 La ruta `/peano` tiene una interfaz independiente del evaluador finito y dos modos: demostración automática y manual. La firma de PA es `0`, `S`, `+`, `*`, `=`. Los conectivos y cuantificadores son de primer orden. La teoría usa los seis axiomas que muestra la interfaz y todas las instancias del esquema de inducción, con cierre universal de sus parámetros. El esquema también implica que todo natural distinto de cero tiene predecesor; no se necesita añadir este como un séptimo axioma.
 
 Referencias de contenido: [Open Logic Project, Incompleteness and Computability](https://ic.openlogicproject.org/ic-screen.pdf) y [Ernest Schimmerling, Basic and Intermediate Logic, capítulo 5](https://www.math.cmu.edu/~eschimme/300Book/400-Page-5.html). Se usa la firma reducida sin orden ni exponenciación.
@@ -64,3 +77,19 @@ Límites: 2000 caracteres y 350 tokens por entrada; numerales hasta 50; 1–100 
 ## Verificación
 
 `npm test` incluye sintaxis y precedencia de PA, variables libres, inducción parametrizada, una prueba completa de 0+1=1, las reglas admitidas, rechazo de capturas y dependencias inválidas, codificación exacta con recuperación y contrato HTTP. Las pruebas automáticas reproducen sus certificados en el comprobador manual, contrastan sumas y productos pequeños con aritmética independiente y distinguen límites y objetivos no resueltos de una refutación. `npm run build` compila las dos interfaces.
+
+## Recorrido de incompletitud
+
+La entrada principal es ahora una lección de nueve retos en lenguaje cotidiano. Presenta el encargo de construir una máquina que lo demuestre todo; el alumno responde preguntas, recibe explicaciones específicas para cada opción y puede usar dos pistas progresivas o revelar la solución. Las soluciones revisadas con ayuda se distinguen de los retos resueltos. Ambos caminos permiten avanzar; los errores se pueden reintentar sin penalizaciones.
+
+El mapa desbloquea el siguiente reto tras resolver o revisar el actual. El progreso y una reflexión final libre se guardan localmente en el navegador; si el almacenamiento no está disponible, la lección sigue funcionando durante la visita. La restauración valida los datos guardados y respeta el primer reto pendiente. Reiniciar los retos conserva la reflexión. La reflexión no se califica automáticamente.
+
+El código de juguete 0→1, =→2 se presenta como un convenio distinto de la calculadora real. La autorreferencia y el paso de Rosser se identifican como puentes matemáticos explicados intuitivamente, sin simular una verificación formal ni deducir ambas direcciones de G bajo consistencia sola. La versión técnica anterior sigue disponible en un desplegable opcional.
+
+La consulta opcional conserva el recorrido técnico anterior de nueve pasos: hipótesis, codificación de sintaxis y pruebas, representación de Proof, definición de Prov, lema diagonal, no demostrabilidad de G bajo consistencia, papel de la ω-consistencia para su negación, mejora de Rosser, segundo teorema y distinción entre teorías y modelos.
+
+El selector usa PA o una extensión efectiva de PA. El selector de hipótesis distingue ausencia de consistencia asumida, consistencia y ω-consistencia; nunca certifica que PA sea consistente. El argumento de G no se confunde con la oración de Rosser: la consistencia basta para la independencia de R, mientras el recorrido original de G usa ω-consistencia para excluir una prueba de su negación. El segundo teorema se presenta con la demostrabilidad habitual y las condiciones de derivabilidad.
+
+El editor de esquemas permite escribir borradores de la definición de demostrabilidad, el punto fijo de Gödel y los dos teoremas. Es metanotación editable sin validación automática; no amplía la firma del parser ni pretende expandir Proof o calcular un entero concreto de la oración autorreferente. La explicación se refiere al sistema completo de PA, no al subconjunto de reglas implementado por el comprobador educativo.
+
+También se explica por qué el codificador usa paréntesis canónicos y qué cambiaría con una codificación del texto literal. Las referencias están enlazadas en la interfaz.

@@ -7,7 +7,13 @@ export function WorkspaceNav({ active }) {
         Evaluador semántico
       </Link>
       <Link href="/peano" aria-current={active === 'peano' ? 'page' : undefined}>
-        Aritmética de Peano y Gödel
+        Peano
+      </Link>
+      <Link href="/godel" aria-current={active === 'godel' ? 'page' : undefined}>
+        Números de Gödel
+      </Link>
+      <Link href="/godel/aprender" aria-current={active === 'learn' ? 'page' : undefined}>
+        Aprender paso a paso
       </Link>
     </nav>
   );
