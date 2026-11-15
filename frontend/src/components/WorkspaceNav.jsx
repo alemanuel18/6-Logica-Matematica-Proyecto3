@@ -15,6 +15,9 @@ export function WorkspaceNav({ active }) {
       <Link href="/godel/aprender" aria-current={active === 'learn' ? 'page' : undefined}>
         Aprender paso a paso
       </Link>
+      <Link href="/actividades" aria-current={active === 'activities' ? 'page' : undefined}>
+        Actividades
+      </Link>
     </nav>
   );
 }

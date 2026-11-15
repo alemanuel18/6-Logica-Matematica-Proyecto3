@@ -70,6 +70,16 @@ export default function GuidePage() {
             interrumpirla. La voz disponible depende del dispositivo.
           </p>
         </section>
+        <section className="card">
+          <span className="eyebrow">06</span>
+          <h2>Actividades</h2>
+          <p>
+            Practica con un duelo de cuantificadores, construye contraejemplos, explora programas en
+            una consola, resuelve un escape room y encuentra errores en demostraciones. Cada
+            actividad incluye instrucciones y explicaciones para repetirla a tu ritmo.
+          </p>
+          <Link href="/actividades">Explorar las cinco actividades →</Link>
+        </section>
       </div>
     </main>
   );

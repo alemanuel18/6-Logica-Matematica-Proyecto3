@@ -75,6 +75,18 @@ La navegación principal separa **Evaluador semántico** (`/`), **Peano** (`/pea
 4. Si hay variables libres, selecciona un valor del dominio para cada una.
 5. Pulsa **Evaluar fórmula**. Los errores aparecen sin valor de verdad; el resultado válido incluye una razón decisiva o una comprobación completa.
 
+## Actividades
+
+La sección **Actividades** (`/actividades`) reúne cinco experiencias con una identidad visual compartida en ciruela y crema, navegación propia y diseños de interacción diferenciados:
+
+- **Duelo de cuantificadores**: defiende dos órdenes de cuantificación en dos mundos de relaciones.
+- **Detective de contraejemplos**: construye mundos de dos o tres personas para refutar dos implicaciones.
+- **La consola de Turing**: ejecuta tres programas de una máquina de registro, predice su comportamiento y explora el argumento diagonal del problema de la parada. Distingue terminación, ciclo demostrado y límite de ejecución sin conclusión. No emula una máquina de cinta.
+- **Escape room lógico**: cuatro salas sobre cuantificadores, contraejemplos, suma en Peano y codificación por primos.
+- **Encuentra el paso falso**: revisa tres argumentos preparados y localiza el primer error.
+
+Las actividades funcionan en el navegador sin API ni servicios externos. Sus comprobaciones se limitan a los retos preparados; el evaluador general y el comprobador de Peano siguen en el backend. Los intentos se reinician al abandonar la actividad. Las pruebas contrastan las relaciones de todos los mundos de dos y tres elementos con el evaluador del backend y comprueban el simulador de registro.
+
 ## API
 
 ### Aritmética de Peano y Gödel
