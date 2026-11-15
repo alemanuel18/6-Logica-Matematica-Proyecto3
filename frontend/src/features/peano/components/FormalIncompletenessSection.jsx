@@ -1,13 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { TheoremWorkshop } from './TheoremWorkshop.jsx';
 
 export function FormalIncompletenessSection() {
   const [theory, setTheory] = useState('PA');
   const [hypothesis, setHypothesis] = useState('consistent');
   const [step, setStep] = useState(0);
-  const [schema, setSchema] = useState('goedel');
-  const [draft, setDraft] = useState(null);
   const t = theory;
   const g = `G_${t}`;
   const r = `R_${t}`;
@@ -80,18 +79,6 @@ export function FormalIncompletenessSection() {
         'Una teoría es un conjunto de axiomas; un modelo es una estructura que los satisface. Si R es independiente, ambas teorías PA+R y PA+¬R son consistentes y, por completitud de la lógica de primer orden, tienen modelos. Esa completitud de la lógica no significa que PA decida todas las oraciones.',
     },
   ];
-  const schemas = {
-    proof: { label: 'Demostrabilidad', formula: `${prov}(x) ≡ ∃p.${proof}(p,x)` },
-    goedel: { label: 'Oración de Gödel', formula: `${t} ⊢ (${g} ↔ ¬${prov}(⌜${g}⌝))` },
-    rosser: {
-      label: 'Primer teorema: Gödel–Rosser',
-      formula: `Si ${t} es consistente y efectivamente axiomatizable, entonces existe ${r} tal que:\n${t} ⊬ ${r}  y  ${t} ⊬ ¬${r}.`,
-    },
-    second: {
-      label: 'Segundo teorema',
-      formula: `Con(${t}) ≡ ¬${prov}(⌜0=S(0)⌝)\nSi ${t} es consistente, con la demostrabilidad habitual, ${t} ⊬ Con(${t}).`,
-    },
-  };
 
   return (
     <section className="card pa-full incompleteness-section" aria-labelledby="incompleteness-title">
@@ -110,7 +97,6 @@ export function FormalIncompletenessSection() {
             value={theory}
             onChange={(event) => {
               setTheory(event.target.value);
-              setDraft(null);
             }}
           >
             <option value="PA">PA: aritmética de Peano</option>
@@ -198,46 +184,11 @@ export function FormalIncompletenessSection() {
           </li>
         </ul>
       </div>
-      <h3>Escribir el esquema del teorema</h3>
-      <label className="field-label" htmlFor="incompleteness-schema">
-        Esquema de partida
-      </label>
-      <select
-        id="incompleteness-schema"
-        className="pa-input"
-        value={schema}
-        onChange={(event) => {
-          setSchema(event.target.value);
-          setDraft(null);
-        }}
-      >
-        {Object.entries(schemas).map(([key, value]) => (
-          <option key={key} value={key}>
-            {value.label}
-          </option>
-        ))}
-      </select>
-      <label className="field-label" htmlFor="incompleteness-draft">
-        Borrador simbólico editable
-      </label>
-      <textarea
-        id="incompleteness-draft"
-        rows={5}
-        className="formula-input"
-        value={draft ?? schemas[schema].formula}
-        maxLength={5000}
-        spellCheck={false}
-        onChange={(event) => setDraft(event.target.value)}
+      <TheoremWorkshop
+        theory={theory}
+        hypothesis={hypothesis}
+        onAssumeConsistency={() => setHypothesis('consistent')}
       />
-      <button className="secondary pa-action" onClick={() => setDraft(null)}>
-        Restaurar esquema
-      </button>
-      <p className="syntax-note">
-        Este borrador no se valida como prueba. ⊢ significa «demuestra»; ⊬ significa «no demuestra»;
-        ≡ introduce una abreviatura y ⌜A⌝ designa el numeral del código de A. G, R, Proof y Prov son
-        abreviaturas, no símbolos adicionales admitidos por el editor básico de PA. El punto fijo
-        mostrado no es una expansión completa de la oración en 0, S, +, * e igualdad.
-      </p>
       <details className="pa-details">
         <summary>Por qué el codificador añade paréntesis</summary>
         <p>

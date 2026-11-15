@@ -80,6 +80,14 @@ Límites: 2000 caracteres y 350 tokens por entrada; numerales hasta 50; 1–100 
 
 ## Recorrido de incompletitud
 
+### Taller de construcción de esquemas
+
+La referencia en `/godel/teoremas` incluye cuatro actividades: definir demostrabilidad, construir el punto fijo de Gödel y enunciar el primer y el segundo teorema. El alumno elige dos piezas por actividad, ve su propuesta simbólica y puede comprobarla. Los errores de cuantificador, referencia, orden de argumentos, alcance o conclusión reciben explicaciones específicas.
+
+La revisión distingue piezas incompletas, construcciones que necesitan corrección, hipótesis faltantes y propuestas que encajan. Construir la definición de Prov o el punto fijo no requiere asumir consistencia. Aplicar las conclusiones de Gödel–Rosser y del segundo teorema sí la requiere. Se mantienen las condiciones de extensión efectiva de PA y demostrabilidad habitual de la página. Cambiar la teoría, la hipótesis o las piezas invalida la revisión anterior.
+
+Una construcción revisada permite revelar el razonamiento por etapas. El borrador libre sigue disponible, pero su texto no se valida automáticamente. El taller revisa una selección estructurada y sus hipótesis; no implementa un verificador general de metateoremas ni certifica la consistencia de PA.
+
 La entrada principal es ahora una lección de nueve retos en lenguaje cotidiano. Presenta el encargo de construir una máquina que lo demuestre todo; el alumno responde preguntas, recibe explicaciones específicas para cada opción y puede usar dos pistas progresivas o revelar la solución. Las soluciones revisadas con ayuda se distinguen de los retos resueltos. Ambos caminos permiten avanzar; los errores se pueden reintentar sin penalizaciones.
 
 El mapa desbloquea el siguiente reto tras resolver o revisar el actual. El progreso y una reflexión final libre se guardan localmente en el navegador; si el almacenamiento no está disponible, la lección sigue funcionando durante la visita. La restauración valida los datos guardados y respeta el primer reto pendiente. Reiniciar los retos conserva la reflexión. La reflexión no se califica automáticamente.

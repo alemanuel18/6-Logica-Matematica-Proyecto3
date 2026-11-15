@@ -4,6 +4,47 @@
   background: #f6f8f8;
   font-synthesis: none;
 }
+.theorem-workshop {
+  border-top: 1px solid #dce8e1;
+  margin: 25px 0;
+  padding-top: 12px;
+}
+.workshop-goal {
+  padding: 16px;
+  background: #f0f6f3;
+  color: #34544b;
+  border-radius: 9px;
+  line-height: 1.7;
+  margin: 18px 0 6px;
+}
+.workshop-preview {
+  border: 1px dashed #9fcdb8;
+  border-radius: 10px;
+  padding: 18px;
+  margin-top: 18px;
+  background: #fcfdfc;
+}
+.workshop-preview .math-text {
+  margin: 10px 0;
+}
+.workshop-reasoning {
+  margin: 18px 0;
+  border-left: 3px solid #8fc5ad;
+  padding: 5px 0 10px 18px;
+}
+.workshop-reasoning h4 {
+  margin: 10px 0;
+  color: #34544b;
+}
+.workshop-reasoning ol {
+  padding-left: 22px;
+  color: #34544b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.workshop-reasoning li {
+  margin: 12px 0;
+}
 .workspace-nav {
   display: flex;
   flex-wrap: wrap;
