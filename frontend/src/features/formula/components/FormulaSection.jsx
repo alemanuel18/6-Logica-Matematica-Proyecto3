@@ -1,6 +1,8 @@
+import { SyntaxTree } from './SyntaxTree.jsx';
+
 const buttons = ['¬', '∧', '∨', '→', '↔', '∀', '∃', '(', ')', '='];
 
-export function FormulaSection({ formula, setFormula, textarea, insert }) {
+export function FormulaSection({ formula, setFormula, textarea, insert, ast, analysisError }) {
   return (
     <section className="card formula-card">
       <span className="eyebrow">03 · Expresión</span>
@@ -34,6 +36,7 @@ export function FormulaSection({ formula, setFormula, textarea, insert }) {
         placeholder="∀x.(P(x) → Q(x))"
       />
       <p className="syntax-note">También puedes escribir !, &amp;, |, -&gt; y &lt;-&gt;.</p>
+      <SyntaxTree ast={ast} error={analysisError} />
     </section>
   );
 }

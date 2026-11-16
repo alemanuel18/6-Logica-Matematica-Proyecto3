@@ -175,7 +175,7 @@ export function inductionPA(body, variable) {
   return axiom;
 }
 
-export function checkProof(steps) {
+export function checkProof(steps, goal) {
   if (!Array.isArray(steps) || !steps.length || steps.length > 100)
     fail('Incluye entre 1 y 100 pasos.');
   const checked = [];
@@ -286,7 +286,21 @@ export function checkProof(steps) {
       return { valid: false, error: error.message };
     }
   });
-  return { valid: results.every((s) => s.valid), steps: results };
+  let goalResult = null;
+  if (goal !== undefined) {
+    const target = parsePA(goal);
+    const derived = checked.at(-1);
+    goalResult = {
+      valid: Boolean(derived && eq(derived, target)),
+      formula: printPA(target),
+      derived: derived ? printPA(derived) : null,
+    };
+  }
+  return {
+    valid: results.every((step) => step.valid) && (goalResult?.valid ?? true),
+    steps: results,
+    ...(goalResult && { goal: goalResult }),
+  };
 }
 
 // Goal-directed, bounded proof construction. Every successful result is replayed
@@ -563,7 +577,7 @@ export function peanoAction(input) {
     case 'induction':
       return { formula: printPA(inductionPA(input.body, input.variable)) };
     case 'proof':
-      return checkProof(input.steps);
+      return checkProof(input.steps, input.formula);
     case 'prove':
       return provePA(input.formula, input.maxSteps);
     case 'encode':

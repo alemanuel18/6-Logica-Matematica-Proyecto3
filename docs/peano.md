@@ -35,7 +35,7 @@ El presupuesto admite 10–100 pasos (interfaz: 25, 50 o 100), con un máximo fi
 
 ## Comprobación manual de pruebas
 
-Todos los pasos deben derivarse de axiomas o reglas admitidas, sin hipótesis abiertas. Este es un comprobador educativo de un subconjunto de reglas válidas en PA; no es un cálculo completo. En el modo manual el usuario elige cada paso y su justificación.
+Todos los pasos deben derivarse de axiomas o reglas admitidas, sin hipótesis abiertas. Este es un comprobador educativo de un subconjunto de reglas válidas en PA; no es un cálculo completo. En el modo manual el usuario escribe primero la fórmula objetivo, elige cada paso y su justificación, y el comprobador exige que la última fórmula coincida con el objetivo. La interfaz muestra la forma simbólica de la regla seleccionada, las fórmulas de sus premisas y la fórmula y significado del axioma P1–P6 elegido.
 
 - `axiom`: copia exacta de P1–P6, identificado por `axiom`.
 - `induction`: instancia generada desde `body` y `variable`. Sustituye solo ocurrencias libres y cierra universalmente los parámetros restantes, en orden alfabético.
@@ -67,7 +67,7 @@ Este convenio es didáctico y no pretende reproducir la codificación histórica
 
 - `{action: "analyze", formula}` → `{canonical, freeVariables}`.
 - `{action: "induction", body, variable}` → `{formula}`.
-- `{action: "proof", steps}` → `{valid, steps: [{valid, formula? , error?}]}`.
+- `{action: "proof", formula?, steps}` → `{valid, steps: [{valid, formula? , error?}], goal?}`. Si se envía `formula`, la última línea debe coincidir con ese objetivo.
 - `{action: "prove", formula, maxSteps?: 100}` → `{status: "proved", formula, steps, maxSteps}` o `{status: "notFound", formula, steps: [], reason, message, maxSteps}`. `reason` puede ser `limit`, `unsupported` o `normalFormsDiffer`. Ninguno afirma falsedad.
 - `{action: "encode", formula}` → `{canonical, factors: [{token, prime, exponent}], number, expanded}`. Exponentes y entero son cadenas decimales; `number` es null si no se expande.
 - `{action: "decode", number}` → `{formula}`. `number` debe ser una cadena decimal.

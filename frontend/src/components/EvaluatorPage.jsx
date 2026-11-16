@@ -63,6 +63,8 @@ export function EvaluatorPage() {
             setFormula={state.setFormula}
             textarea={state.textarea}
             insert={state.insert}
+            ast={state.ast}
+            analysisError={state.analysisError}
           />
           <EnvironmentSection
             analysisError={state.analysisError}

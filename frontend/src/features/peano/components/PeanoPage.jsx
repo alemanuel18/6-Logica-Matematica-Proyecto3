@@ -7,12 +7,27 @@ import { LearningPageShell, peanoLinks } from '../../../components/LearningPageS
 import { useRequest, Feedback } from './PeanoRequest.jsx';
 
 const axioms = [
-  ['P1', 'Cero no es sucesor', '∀x.¬(S(x)=0)'],
-  ['P2', 'Sucesor inyectivo', '∀x.∀y.(S(x)=S(y)→x=y)'],
-  ['P3', 'Suma con cero', '∀x.(x+0=x)'],
-  ['P4', 'Suma con sucesor', '∀x.∀y.(x+S(y)=S(x+y))'],
-  ['P5', 'Producto con cero', '∀x.(x*0=0)'],
-  ['P6', 'Producto con sucesor', '∀x.∀y.(x*S(y)=x*y+x)'],
+  ['P1', 'Cero no es sucesor', '∀x.¬(S(x)=0)', 'Ningún sucesor es cero.'],
+  [
+    'P2',
+    'Sucesor inyectivo',
+    '∀x.∀y.(S(x)=S(y)→x=y)',
+    'Sucesores iguales tienen antecesores iguales.',
+  ],
+  ['P3', 'Suma con cero', '∀x.(x+0=x)', 'Sumar cero deja el mismo número.'],
+  [
+    'P4',
+    'Suma con sucesor',
+    '∀x.∀y.(x+S(y)=S(x+y))',
+    'Define la suma cuando el segundo término es un sucesor.',
+  ],
+  ['P5', 'Producto con cero', '∀x.(x*0=0)', 'Multiplicar por cero da cero.'],
+  [
+    'P6',
+    'Producto con sucesor',
+    '∀x.∀y.(x*S(y)=x*y+x)',
+    'Define el producto cuando el segundo término es un sucesor.',
+  ],
 ];
 const rules = [
   [
@@ -20,40 +35,57 @@ const rules = [
     'Axioma P1–P6',
     0,
     'Copia un axioma tal como aparece; luego particulariza sus variables.',
+    'P1, P2, P3, P4, P5 o P6',
   ],
   [
     'induction',
     'Esquema de inducción',
     0,
     'Genera (φ(0) ∧ ∀x.(φ(x) → φ(S(x)))) → ∀x.φ(x), con cierre universal de los parámetros.',
+    '(φ(0) ∧ ∀x.(φ(x) → φ(S(x)))) → ∀x.φ(x)',
   ],
   [
     'forallElim',
     'Eliminación de ∀',
     1,
     'De ∀x.φ obtiene φ[x:=t]. El término debe ser libre para x: no se permite capturar variables.',
+    '∀x.φ(x)  ⊢  φ(t)',
   ],
   [
     'forallIntro',
     'Introducción de ∀',
     1,
     'De φ obtiene ∀x.φ. Aquí todos los pasos se derivan sin hipótesis abiertas.',
+    'φ(a)  ⊢  ∀x.φ(x)   (a arbitrario)',
   ],
-  ['mp', 'Modus ponens', 2, 'De A→B (ref. 1) y A (ref. 2), obtiene B.'],
-  ['refl', 'Igualdad: reflexividad', 0, 'Obtiene t=t para el término indicado.'],
-  ['sym', 'Igualdad: simetría', 1, 'De a=b obtiene b=a.'],
-  ['trans', 'Igualdad: transitividad', 2, 'De a=b y b=c, en ese orden, obtiene a=c.'],
-  ['successor', 'Congruencia del sucesor', 1, 'De a=b obtiene S(a)=S(b).'],
-  ['congruence', 'Congruencia de suma o producto', 2, 'De a=b y c=d obtiene a+c=b+d o a*c=b*d.'],
+  ['mp', 'Modus ponens', 2, 'De A→B (ref. 1) y A (ref. 2), obtiene B.', 'A→B,  A  ⊢  B'],
+  ['refl', 'Igualdad: reflexividad', 0, 'Obtiene t=t para el término indicado.', 't=t'],
+  ['sym', 'Igualdad: simetría', 1, 'De a=b obtiene b=a.', 'a=b  ⊢  b=a'],
+  [
+    'trans',
+    'Igualdad: transitividad',
+    2,
+    'De a=b y b=c, en ese orden, obtiene a=c.',
+    'a=b,  b=c  ⊢  a=c',
+  ],
+  ['successor', 'Congruencia del sucesor', 1, 'De a=b obtiene S(a)=S(b).', 'a=b  ⊢  S(a)=S(b)'],
+  [
+    'congruence',
+    'Congruencia de suma o producto',
+    2,
+    'De a=b y c=d obtiene a+c=b+d o a*c=b*d.',
+    'a=b,  c=d  ⊢  a+c=b+d  /  a*c=b*d',
+  ],
   [
     'existsIntro',
     'Introducción de ∃',
     1,
     'De φ[x:=t] obtiene ∃x.φ con el testigo t, sin capturar variables.',
+    'φ(t)  ⊢  ∃x.φ(x)',
   ],
-  ['andIntro', 'Introducción de ∧', 2, 'De A y B obtiene A∧B.'],
-  ['andLeft', 'Eliminación de ∧ (izquierda)', 1, 'De A∧B obtiene A.'],
-  ['andRight', 'Eliminación de ∧ (derecha)', 1, 'De A∧B obtiene B.'],
+  ['andIntro', 'Introducción de ∧', 2, 'De A y B obtiene A∧B.', 'A,  B  ⊢  A∧B'],
+  ['andLeft', 'Eliminación de ∧ (izquierda)', 1, 'De A∧B obtiene A.', 'A∧B  ⊢  A'],
+  ['andRight', 'Eliminación de ∧ (derecha)', 1, 'De A∧B obtiene B.', 'A∧B  ⊢  B'],
 ];
 const blankStep = () => ({
   formula: '',
@@ -505,10 +537,29 @@ export function PeanoPage({ section = 'proof' }) {
               <span className="eyebrow">03 · DEDUCCIÓN</span>
               <h2 id="pa-proof">Demostración manual</h2>
               <p className="hint">
-                El ejemplo demuestra 0 + 1 = 1. El comprobador admite las reglas listadas abajo, sin
-                hipótesis abiertas. Es un conjunto inicial de reglas; todavía no es un asistente
-                completo para toda PA. En este modo tú eliges cada paso y su justificación.
+                Escribe primero la fórmula que quieres demostrar. Después construye una deducción
+                cuyo último paso sea exactamente ese objetivo. El comprobador admite las reglas
+                listadas abajo, sin hipótesis abiertas.
               </p>
+              <div className="manual-proof-goal">
+                <span className="eyebrow">FÓRMULA A DEMOSTRAR</span>
+                <label className="field-label" htmlFor="manual-proof-formula">
+                  Objetivo de la demostración
+                </label>
+                <textarea
+                  id="manual-proof-formula"
+                  className="formula-input"
+                  value={formula}
+                  onChange={(event) => editFormula(event.target.value)}
+                  maxLength={2000}
+                  rows={2}
+                  spellCheck={false}
+                />
+                <p className="syntax-note">
+                  El último paso debe producir esta fórmula. El objetivo no cuenta como un paso de
+                  la prueba.
+                </p>
+              </div>
               <details className="pa-details">
                 <summary>Consultar reglas y condiciones</summary>
                 {rules.map(([id, label, , description]) => (
@@ -536,6 +587,10 @@ export function PeanoPage({ section = 'proof' }) {
                 >
                   Nueva demostración
                 </button>
+              </div>
+              <div className="manual-proof-heading">
+                <span className="eyebrow">PASOS DE LA DEDUCCIÓN</span>
+                <p>Justifica cada línea hasta alcanzar el objetivo.</p>
               </div>
               <ol className="proof-list">
                 {steps.map((step, index) => {
@@ -577,6 +632,20 @@ export function PeanoPage({ section = 'proof' }) {
                             </option>
                           ))}
                         </select>
+                        <div className="rule-visual-guide" aria-live="polite">
+                          <span className="eyebrow">FORMA DE LA REGLA</span>
+                          <p className="math-text">
+                            {step.rule === 'axiom'
+                              ? axioms.find(([id]) => id === step.axiom)?.[2]
+                              : rule[4]}
+                          </p>
+                          <p>{rule[3]}</p>
+                          {step.rule === 'axiom' && (
+                            <p className="rule-meaning">
+                              {axioms.find(([id]) => id === step.axiom)?.[3]}
+                            </p>
+                          )}
+                        </div>
                         {step.rule === 'axiom' && (
                           <>
                             <label className="field-label" htmlFor={`axiom-${index}`}>
@@ -600,21 +669,44 @@ export function PeanoPage({ section = 'proof' }) {
                           {Array.from({ length: rule[2] }, (_, slot) => (
                             <label key={slot} className="field-label">
                               Referencia {slot + 1}
-                              <input
-                                type="number"
-                                min={1}
-                                max={index || 1}
+                              <select
                                 className="pa-input"
                                 value={step.refs[slot] ?? ''}
                                 onChange={(e) => {
                                   const refs = [...step.refs];
-                                  refs[slot] = Number(e.target.value);
+                                  refs[slot] = e.target.value ? Number(e.target.value) : undefined;
                                   updateStep(index, { refs });
                                 }}
-                              />
+                                disabled={index === 0}
+                              >
+                                <option value="">
+                                  {index === 0 ? 'Aún no hay pasos anteriores' : 'Elige un paso…'}
+                                </option>
+                                {steps.slice(0, index).map((previous, previousIndex) => (
+                                  <option key={previousIndex} value={previousIndex + 1}>
+                                    Paso {previousIndex + 1} · {previous.formula || 'Sin fórmula'}
+                                  </option>
+                                ))}
+                              </select>
                             </label>
                           ))}
                         </div>
+                        {rule[2] > 0 && (
+                          <div className="rule-premises" aria-label="Premisas seleccionadas">
+                            {Array.from({ length: rule[2] }, (_, slot) => {
+                              const reference = step.refs[slot];
+                              const premise = reference ? steps[reference - 1]?.formula : '';
+                              return (
+                                <p key={slot}>
+                                  <strong>Premisa {slot + 1}</strong>
+                                  <span className={premise ? 'math-text' : 'syntax-note'}>
+                                    {premise || 'Selecciona un paso anterior.'}
+                                  </span>
+                                </p>
+                              );
+                            })}
+                          </div>
+                        )}
                         {step.rule === 'congruence' && (
                           <label className="field-label">
                             Operador
@@ -696,7 +788,7 @@ export function PeanoPage({ section = 'proof' }) {
               <button
                 className="evaluate-button"
                 disabled={proof.busy}
-                onClick={() => proof.run({ action: 'proof', steps })}
+                onClick={() => proof.run({ action: 'proof', formula, steps })}
               >
                 Comprobar demostración <span>→</span>
               </button>
@@ -705,7 +797,11 @@ export function PeanoPage({ section = 'proof' }) {
                   <p className={proof.data.valid ? 'reason pa-success' : 'inline-error'}>
                     {proof.data.valid
                       ? 'Todos los pasos están justificados. La última fórmula se deriva de los axiomas de PA con las reglas admitidas.'
-                      : 'La demostración tiene pasos sin justificar. Revisa los mensajes en cada paso.'}
+                      : proof.data.goal &&
+                          !proof.data.goal.valid &&
+                          proof.data.steps.every((step) => step.valid)
+                        ? `Los pasos están justificados, pero la última fórmula es ${proof.data.goal.derived ?? 'inválida'} y no coincide con el objetivo ${proof.data.goal.formula}.`
+                        : 'La demostración tiene pasos sin justificar. Revisa los mensajes en cada paso.'}
                   </p>
                 )}
               </Feedback>

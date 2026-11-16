@@ -103,7 +103,7 @@ La sección de Gödel codifica fórmulas canónicas por potencias de primos con 
 
 ### Evaluador semántico
 
-`POST /api/tuples` recibe `{ "domain": ["a", "b"], "arities": [0, 1] }` y devuelve las combinaciones por aridad. `POST /api/analyze` recibe la interpretación y fórmula, y devuelve `freeVariables`. `POST /api/evaluate` recibe además `environment` y devuelve `truth`, `result`, `freeVariables` y `explanation`. `GET /api/health` indica disponibilidad.
+`POST /api/tuples` recibe `{ "domain": ["a", "b"], "arities": [0, 1] }` y devuelve las combinaciones por aridad. `POST /api/analyze` recibe la interpretación y fórmula, y devuelve `ast` y `freeVariables`. `POST /api/evaluate` recibe además `environment` y devuelve `truth`, `result`, `freeVariables` y `explanation`. `GET /api/health` indica disponibilidad.
 
 La especificación completa está en [docs/openapi.yaml](docs/openapi.yaml) y se sirve desde `GET /api/openapi.yaml` para importarla en Swagger UI, Redoc o un cliente OpenAPI.
 

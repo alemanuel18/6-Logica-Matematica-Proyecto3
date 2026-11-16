@@ -42,6 +42,16 @@ test('PA: prueba aritmética con instanciación, congruencia y transitividad', (
     { rule: 'trans', refs: [6, 3], formula: '0+1=1' },
   ];
   assert.equal(checkProof(steps).valid, true);
+  const matchingGoal = checkProof(steps, '0+1=1');
+  assert.equal(matchingGoal.valid, true);
+  assert.equal(matchingGoal.goal.valid, true);
+  const differentGoal = checkProof(steps, '0=0');
+  assert.equal(differentGoal.valid, false);
+  assert.equal(
+    differentGoal.steps.every((step) => step.valid),
+    true,
+  );
+  assert.equal(differentGoal.goal.derived, '((0+S(0))=S(0))');
   steps[1].formula = '0+0=1';
   const invalid = checkProof(steps);
   assert.equal(invalid.valid, false);
@@ -115,8 +125,14 @@ test('API Peano: validación, prueba y errores 422', async () => {
     assert.equal(automatic.status, 200);
     const solution = await automatic.json();
     assert.equal(solution.status, 'proved');
-    const manual = await post({ action: 'proof', steps: solution.steps });
-    assert.equal((await manual.json()).valid, true);
+    const manual = await post({
+      action: 'proof',
+      formula: solution.formula,
+      steps: solution.steps,
+    });
+    const checkedManual = await manual.json();
+    assert.equal(checkedManual.valid, true);
+    assert.equal(checkedManual.goal.valid, true);
     assert.equal((await post({ action: 'prove', formula: '0=0', maxSteps: 1000 })).status, 422);
     assert.equal((await post({ action: 'encode', formula: 'P(x)' })).status, 422);
     assert.equal((await post({ action: 'proof', steps: [] })).status, 422);

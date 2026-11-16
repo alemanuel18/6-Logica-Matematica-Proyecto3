@@ -29,7 +29,13 @@ test('API: salud, análisis, evaluación y errores sin valor de verdad', async (
       formula: 'P(x)',
       environment: { x: 'a' },
     };
-    assert.deepEqual((await post('/api/analyze', input)).body.freeVariables, ['x']);
+    const analyzed = (await post('/api/analyze', input)).body;
+    assert.deepEqual(analyzed.freeVariables, ['x']);
+    assert.deepEqual(analyzed.ast, {
+      kind: 'predicate',
+      name: 'P',
+      args: [{ kind: 'name', name: 'x' }],
+    });
     const valid = await post('/api/evaluate', input);
     assert.equal(valid.status, 200);
     assert.equal(valid.body.truth, true);

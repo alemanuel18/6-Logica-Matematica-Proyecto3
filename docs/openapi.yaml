@@ -223,24 +223,33 @@ paths:
   /api/analyze:
     post:
       tags: [Fórmulas]
-      summary: Valida la interpretación y detecta variables libres
+      summary: Valida la interpretación, genera el árbol sintáctico y detecta variables libres
       description: La interpretación debe estar completa y ser válida.
       requestBody:
         $ref: '#/components/requestBodies/EvaluationInput'
       responses:
         '200':
-          description: Variables libres ordenadas alfabéticamente
+          description: Árbol sintáctico y variables libres ordenadas alfabéticamente
           content:
             application/json:
               schema:
                 type: object
-                required: [freeVariables]
+                required: [ast, freeVariables]
                 properties:
+                  ast:
+                    type: object
+                    description: Árbol sintáctico abstracto de la fórmula validada.
+                    additionalProperties: true
                   freeVariables:
                     type: array
                     items:
                       type: string
               example:
+                ast:
+                  kind: binary
+                  operator: '∧'
+                  left: { kind: predicate, name: P, args: [{ kind: name, name: x }] }
+                  right: { kind: predicate, name: Q, args: [{ kind: name, name: y }] }
                 freeVariables: [x, y]
         '422':
           $ref: '#/components/responses/ValidationError'
